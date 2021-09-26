@@ -1,0 +1,99 @@
+#!/bin/bash
+
+##CyPwn for Cydown++ v7.1.2-1##
+
+CYDIR=/var/mobile/Documents/CyDown
+CYTMP=/var/mobile/Library/Caches/com.saurik.Cydia/archives/partial
+INSTMP=/var/mobile/Library/"Application Support"/Installer/APT/archives/partial
+ZEBTMP=/var/mobile/Library/"Application Support"/xyz.willy.Zebra/debs/partial
+CYDEBS=/var/mobile/Documents/CyDown/CydiaDebs
+INSDEBS=/var/mobile/Documents/CyDown/InstallerDebs
+ZEBDEBS=/var/mobile/Documents/CyDown/ZebraDebs
+
+if [ -d "${CYDIR}" ]; then
+    if [ -d "${CYTMP}" ]; then
+        if [ -d "${CYDEBS}" ]; then
+            if [ -L "${CYDEBS}" ] && [ "$(readlink "${CYDEBS}")" = "${CYTMP}" ]; then
+                :
+            else
+                rm -r "${CYDEBS}" 2> /dev/null
+                ln -s "${CYTMP}" "${CYDEBS}"
+            fi
+        else
+            ln -s "${CYTMP}" "${CYDEBS}"
+        fi
+    else
+        rm -r "${CYTMP}" 2> /dev/null
+    fi
+    if [ -d "${INSTMP}" ]; then
+        if [ -d "${INSDEBS}" ]; then
+            if [ -L "${INSDEBS}" ] && [ "$(readlink "${INSDEBS}")" = "${INSTMP}" ]; then
+                :
+            else
+                rm -r "${INSDEBS}" 2> /dev/null
+                ln -s "${INSTMP}" "${INSDEBS}"
+            fi
+        else
+            ln -s "${INSTMP}" "${INSDEBS}"
+        fi
+    else
+        rm -r "${INSTMP}" 2> /dev/null
+    fi
+    if [ -d "${ZEBTMP}" ]; then
+        if [ -d "${ZEBDEBS}" ]; then
+            if [ -L "${ZEBDEBS}" ] && [ "$(readlink "${ZEBDEBS}")" = "${ZEBTMP}" ]; then
+                :
+            else
+                rm -r "${ZEBDEBS}" 2> /dev/null
+                ln -s "${ZEBTMP}" "${ZEBDEBS}"
+            fi
+        else
+            ln -s "${ZEBTMP}" "${ZEBDEBS}"
+        fi
+    else
+        rm -r "${ZEBTMP}" 2> /dev/null
+    fi
+else
+    :
+    echo "CyDown directory does not exist"
+fi
+
+for fspec1 in "${CYDEBS}"/*_iphoneos-arm.deb.*; do
+  fspec2=$(echo "${fspec1}" | sed 's/_iphoneos-arm.deb.*/.deb/')
+  mv "${fspec1}" "${fspec2}" 2> /dev/null
+done
+
+for fspec1 in "${INSDEBS}"/*_iphoneos-arm.deb.*; do
+  fspec2=$(echo "${fspec1}" | sed 's/_iphoneos-arm.deb.*/.deb/')
+  mv "${fspec1}" "${fspec2}" 2> /dev/null
+done
+
+for fspec1 in "${ZEBDEBS}"/*_iphoneos-arm.deb.*; do
+  fspec2=$(echo "${fspec1}" | sed 's/_iphoneos-arm.deb.*/.deb/')
+  mv "${fspec1}" "${fspec2}" 2> /dev/null
+done
+
+if [ -d "${CYDIR}" ]; then
+  mv "${CYDEBS}"/*.deb "${CYDIR}" 2> /dev/null
+  mv "${INSDEBS}"/*.deb "${CYDIR}" 2> /dev/null
+  mv "${ZEBDEBS}"/*.deb "${CYDIR}" 2> /dev/null
+
+cat << "EOF"
+ 
+Complete!
+ 
+Refresh your CyDown directory in Filza!
+ 
+ 
+╭━╮ ╭━╮
+┃╭╋┳┫╋┣┳┳┳━┳╮
+┃╰┫┃┃╭┫┃┃┃┃┃┃
+╰━╋╮┣╯╰━━┻┻━╯
+  ╰━╯
+ 
+ 
+EOF
+
+else
+  :
+fi
