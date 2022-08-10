@@ -1,8 +1,9 @@
 Package: ai.paisseon.cydownpp
 Name: CyDown++
-Author: CyPwn
-Description: Improvements to CyDown
-Maintainer: CyPwn
-Version: 7.1.5
-Depends: mobilesubstrate
+Version: 7.1.6
 Architecture: iphoneos-arm
+Description: Improvements and fixes for CyDown
+Maintainer: CyPwn
+Author: CyPwn
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000), com.julioverne.cydown

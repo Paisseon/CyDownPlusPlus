@@ -1,0 +1,9 @@
+{
+    Filter = {
+        Bundles = (
+            "com.saurik.Cydia",
+            "xyz.willy.Zebra",
+            "me.apptapp.installer"
+        );
+    };
+}
